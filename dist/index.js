@@ -20597,6 +20597,8 @@ const execute = async () => {
   const token = core.getInput('token');
   const checksPath = core.getInput('checks-path');
   const octokit = new github.getOctokit(token);
+  core.debug(`octokit: ${octokit}`);
+  core.debug(`octokit.checks: ${octokit.checks}`);
   core.debug(`checks-path: ${checksPath}`);
 
   const checks = await getChecks(checksPath);
