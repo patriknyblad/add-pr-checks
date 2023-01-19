@@ -55,7 +55,7 @@ const execute = async () => {
   const octokit = new github.getOctokit(token);
   core.debug(`checks-path: ${checksPath}`);
 
-  const checks = getChecks(checksPath);
+  const checks = await getChecks(checksPath);
   core.debug(`parsed checks: ${checks}`);
 
   for (let i in checks) {
