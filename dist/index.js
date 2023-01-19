@@ -20609,7 +20609,7 @@ const execute = async () => {
     const checkData = {
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
-      head_sha: github.context.head_ref || github.context.sha,
+      head_sha: github.context?.payload?.pull_request?.head?.sha || github.context.sha,
       name: check.name,
       output: {
         title: check.value,
