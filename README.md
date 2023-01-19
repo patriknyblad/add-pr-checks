@@ -66,6 +66,8 @@ text: |
   size. It should be fairly close to the size reported on the store.
 ```
 
+For more examples see `sample-checks/` in the [Github Repository](https://github.com/patriknyblad/add-pr-checks/blob/main/sample-checks).
+
 # Usage
 
 ```yaml
