@@ -9,5 +9,5 @@ inputs:
     description: 'The path where we should look for checks (example: ".checks/")'
     required: true
 runs:
-  using: 'node18'
+  using: 'node16'
   main: 'dist/index.js'
