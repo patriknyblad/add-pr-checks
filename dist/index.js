@@ -20603,12 +20603,12 @@ const execute = async () => {
   core.debug(`checks-path: ${checksPath}`);
 
   const checks = await getChecks(checksPath);
-  core.debug(`parsed checks: ${checks}`);
+  core.debug(`parsed checks: ${JSON.stringify(checks, null, 2)}`);
 
   for (let i in checks) {
     const check = checks[i];
     // If an existing check with the same name exists it will be replaced with the new data when calling `create`
-    await octokit.rest.checks.create({
+    const checkData = {
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
       head_sha: github.context.sha,
@@ -20620,7 +20620,9 @@ const execute = async () => {
       },
       status: STATUS.COMPLETED,
       conclusion: CONCLUSION.SUCCESS,
-    });  
+    };
+    core.debug(`octokit.rest.checks.create: ${JSON.stringify(checkData, null, 2)}`);
+    await octokit.rest.checks.create(checkData);  
   }
 }
 
