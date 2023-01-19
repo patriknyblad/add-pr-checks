@@ -53,10 +53,8 @@ const execute = async () => {
   const token = core.getInput('token');
   const checksPath = core.getInput('checks-path');
   const octokit = new github.getOctokit(token);
-  core.debug(`octokit: ${octokit}`);
-  core.debug(`octokit.checks: ${octokit.checks}`);
-  core.debug(`octokit.rest: ${octokit.rest}`);
   core.debug(`checks-path: ${checksPath}`);
+  core.debug(`github.context: ${JSON.stringify(github.context, null, 2)}`);
 
   const checks = await getChecks(checksPath);
   core.debug(`parsed checks: ${JSON.stringify(checks, null, 2)}`);
