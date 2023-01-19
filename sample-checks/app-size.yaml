@@ -1,0 +1,8 @@
+---
+# String
+name: Estimated App Size
+# String
+value: 42MB
+# String?
+summary: |
+  # Estimated app download size
