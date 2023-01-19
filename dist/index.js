@@ -20599,6 +20599,7 @@ const execute = async () => {
   const octokit = new github.getOctokit(token);
   core.debug(`octokit: ${octokit}`);
   core.debug(`octokit.checks: ${octokit.checks}`);
+  core.debug(`octokit.rest: ${octokit.rest}`);
   core.debug(`checks-path: ${checksPath}`);
 
   const checks = await getChecks(checksPath);
@@ -20607,7 +20608,7 @@ const execute = async () => {
   for (let i in checks) {
     const check = checks[i];
     // If an existing check with the same name exists it will be replaced with the new data when calling `create`
-    await octokit.checks.create({
+    await octokit.rest.checks.create({
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
       head_sha: github.context.sha,
