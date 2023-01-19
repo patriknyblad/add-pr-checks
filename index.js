@@ -1,6 +1,9 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const glob = require('@actions/glob');
+const YAML = require('yaml');
+const fs = require('fs');
+const path = require('path');
 
 const STATUS = {
   QUEUED: 'queued',
@@ -24,21 +27,21 @@ const getChecks = async (checksPath) => {
   const files = await globber.glob()
   core.debug(`glob result files: ${files}`);
 
-  const checks = files.map((fileName) => {
-    const filePath = `${checksPath}/${fileName}`;
+  const checks = files.map((filePath) => {
+    const fileName = path.basename(filePath);
     const fileContents = fs.readFileSync(filePath, 'utf-8');
     
     // YAML
     if (fileName.toLowerCase().endsWith('.yaml') || fileName.toLowerCase().endsWith('.yml')) {
       return {
-        'id': fileName,
-        ...parse(fileContents),
+        'id': path.parse(fileName).name,
+        ...YAML.parse(fileContents),
       };
     } 
     
     // JSON
     return {
-      'id': fileName,
+      'id': path.parse(fileName).name,
       ...JSON.parse(fileContents),
     };
   });
@@ -52,16 +55,16 @@ const execute = async () => {
   const octokit = new github.getOctokit(token);
   core.debug(`checks-path: ${checksPath}`);
 
-  const checks = getChecks(checksPath);
-  core.debug(`parsed checks: ${checks}`);
+  const checks = await getChecks(checksPath);
+  core.debug(`parsed checks: ${JSON.stringify(checks, null, 2)}`);
 
   for (let i in checks) {
     const check = checks[i];
     // If an existing check with the same name exists it will be replaced with the new data when calling `create`
-    await octokit.checks.create({
+    const checkData = {
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
-      head_sha: github.context.sha,
+      head_sha: github.context?.payload?.pull_request?.head?.sha || github.context.sha,
       name: check.name,
       output: {
         title: check.value,
@@ -70,7 +73,9 @@ const execute = async () => {
       },
       status: STATUS.COMPLETED,
       conclusion: CONCLUSION.SUCCESS,
-    });  
+    };
+    core.debug(`octokit.rest.checks.create(${JSON.stringify(checkData, null, 2)})`);
+    await octokit.rest.checks.create(checkData);  
   }
 }
 

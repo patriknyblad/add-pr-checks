@@ -4,11 +4,16 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "build": "node_modules/.bin/ncc build index.js -o dist"
   },
   "dependencies": {
     "@actions/core": "^1.10.0",
     "@actions/github": "^5.1.1",
-    "@actions/glob": "^0.3.0"
+    "@actions/glob": "^0.3.0",
+    "yaml": "^2.2.1"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.36.0"
   }
 }
