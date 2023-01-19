@@ -1,6 +1,7 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const glob = require('@actions/glob');
+const YAML = require('yaml');
 const fs = require('fs');
 const path = require('path');
 
@@ -34,7 +35,7 @@ const getChecks = async (checksPath) => {
     if (fileName.toLowerCase().endsWith('.yaml') || fileName.toLowerCase().endsWith('.yml')) {
       return {
         'id': path.parse(fileName).name,
-        ...parse(fileContents),
+        ...YAML.parse(fileContents),
       };
     } 
     
