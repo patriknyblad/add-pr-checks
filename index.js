@@ -2,6 +2,7 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const glob = require('@actions/glob');
 const fs = require('fs');
+const path = require('path');
 
 const STATUS = {
   QUEUED: 'queued',
@@ -25,21 +26,21 @@ const getChecks = async (checksPath) => {
   const files = await globber.glob()
   core.debug(`glob result files: ${files}`);
 
-  const checks = files.map((fileName) => {
-    const filePath = `${checksPath}/${fileName}`;
+  const checks = files.map((filePath) => {
+    const fileName = path.basename(filePath);
     const fileContents = fs.readFileSync(filePath, 'utf-8');
     
     // YAML
     if (fileName.toLowerCase().endsWith('.yaml') || fileName.toLowerCase().endsWith('.yml')) {
       return {
-        'id': fileName,
+        'id': path.parse(fileName).name,
         ...parse(fileContents),
       };
     } 
     
     // JSON
     return {
-      'id': fileName,
+      'id': path.parse(fileName).name,
       ...JSON.parse(fileContents),
     };
   });
