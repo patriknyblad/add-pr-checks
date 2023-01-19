@@ -29,7 +29,7 @@ jobs:
       
       # Checks
       - name: Add PR Checks
-        uses: patriknyblad/add-pr-checks@1.0.0-alpha.1
+        uses: patriknyblad/add-pr-checks@patriknyblad/testing-the-action
         with:
           token: ${{ steps.ptrk-app.outputs.token }}
           checks-path: "**/sample-checks/*"
