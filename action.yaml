@@ -1,0 +1,13 @@
+name: 'Add PR Checks'
+description: |
+  'Allows you to collect PR status checks from a defined directory as a post step in your build'
+inputs:
+  token:
+    description: 'your GITHUB_TOKEN'
+    required: true
+  checks-path:
+    description: 'The path where we should look for checks (example: ".checks/")'
+    required: true
+runs:
+  using: 'node18'
+  main: 'index.js'
