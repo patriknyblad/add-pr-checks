@@ -1,0 +1,15 @@
+---
+# String
+name: Code Coverage
+# String
+value: 87%
+# String?
+summary: |
+  # Current code coverage of the app
+  To improve upon this metric we as developers have to add more unit tests covering more lines of code in our codebase.
+text: |
+  ## Details
+  Things to focus on...
+  **Here is a list of things to look at:**
+  - Adding Snapshot Tests
+  - Writing Unit tests
