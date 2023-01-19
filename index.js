@@ -1,6 +1,7 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const glob = require('@actions/glob');
+const fs = require('fs');
 
 const STATUS = {
   QUEUED: 'queued',
