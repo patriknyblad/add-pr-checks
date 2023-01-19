@@ -4,6 +4,8 @@ Allows you to collect PR status checks from a defined directory as a post step i
 does this by scanning a folder for YAML and JSON files. All files will be iterated through to create 
 **one** check per file.
 
+![checks-in-action](https://github.com/patriknyblad/add-pr-checks/blob/main/checks.png)
+
 # Why?
 
 Aren't you also tired of all the bot comments on PRs that you have to scroll past? The comments section 
