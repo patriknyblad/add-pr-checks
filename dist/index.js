@@ -12216,6 +12216,7 @@ const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438);
 const glob = __nccwpck_require__(8090);
 const fs = __nccwpck_require__(7147);
+const path = __nccwpck_require__(1017);
 
 const STATUS = {
   QUEUED: 'queued',
@@ -12239,21 +12240,21 @@ const getChecks = async (checksPath) => {
   const files = await globber.glob()
   core.debug(`glob result files: ${files}`);
 
-  const checks = files.map((fileName) => {
-    const filePath = `${checksPath}/${fileName}`;
+  const checks = files.map((filePath) => {
+    const fileName = path.basename(filePath);
     const fileContents = fs.readFileSync(filePath, 'utf-8');
     
     // YAML
     if (fileName.toLowerCase().endsWith('.yaml') || fileName.toLowerCase().endsWith('.yml')) {
       return {
-        'id': fileName,
+        'id': path.parse(fileName).name,
         ...parse(fileContents),
       };
     } 
     
     // JSON
     return {
-      'id': fileName,
+      'id': path.parse(fileName).name,
       ...JSON.parse(fileContents),
     };
   });
