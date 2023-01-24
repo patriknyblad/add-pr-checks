@@ -51,7 +51,7 @@ const getChecks = async (checksPath) => {
 
 const execute = async () => {
   const token = core.getInput('token');
-  const checksFromWorkflow = core.getInput('checks');
+  const checksFromWorkflow = YAML.parse(core.getInput('checks'));
   const checksPath = core.getInput('checks-path');
   const octokit = new github.getOctokit(token);
   core.debug(`checks: ${checksFromWorkflow}`);
