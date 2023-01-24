@@ -32,7 +32,8 @@ Some ideas:
 # Inputs
 
 - `token`: Your Github API token. Recommended to use as a secret ${{ secrets.GITHUB_TOKEN }}
-- `checks-path`: The path to where you are generating all the checks YAML/JSON files in your build, this supports glob patterns.
+- `checks-path`: (optional) The path to where you are generating all the checks YAML/JSON files in your build, this supports glob patterns.
+- `checks`: (optional) An array of checks you want to add to the PR directly from your workflow.
 
 # Check file format
 
@@ -45,22 +46,19 @@ The `checks-path` can contain a mix of YAML or JSON files, each file should repr
 name: The name of your check (same as `name` in the github checks API docs)
 # String
 value: Written directly after the name of the check in the bottom of the PR. (mapped to `title` in the github checks API docs)
-# String?
+# String
 summary: |
   Markdown compatible text field (same as `output.summary` in the github checks API docs)
+# String?
 text: |
-  This size is just and estimation and is the result of compressing the build output and measuring the 
-  size. It should be fairly close to the size reported on the store. (same as `output.text` in the github checks API docs)
+  Optional markdown compatible text field (same as `output.text` in the github checks API docs)
 ```
 
 **Example:**
 *app-size.yaml*
 ```yaml
-# String
 name: Estimated App Size
-# String
 value: 116MB
-# String?
 summary: |
   # Estimated app download size
 text: |
@@ -80,4 +78,18 @@ For more examples see `sample-checks/` in the [Github Repository](https://github
 
     # The path to where you are generating all the checks YAML/JSON files in your build, this supports glob patterns.
     checks-path: '**/.checks'
+
+    # An array of checks you want to add to the PR directly from your workflow.
+    checks: 
+      - name: Estimated App Size
+        value: 116MB
+        summary: |
+          # Estimated app download size
+        text: |
+          This size is just and estimation and is the result of **compressing** the build output and measuring the 
+          size. It should be fairly close to the size reported on the store.
+      - name: App download QR code
+        value: See details
+        summary: |
+          ![QR-Code](https://example.com/qr-code)
 ```
