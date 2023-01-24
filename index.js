@@ -51,11 +51,16 @@ const getChecks = async (checksPath) => {
 
 const execute = async () => {
   const token = core.getInput('token');
+  const checksFromWorkflow = core.getInput('checks');
   const checksPath = core.getInput('checks-path');
   const octokit = new github.getOctokit(token);
+  core.debug(`checks: ${checksFromWorkflow}`);
   core.debug(`checks-path: ${checksPath}`);
 
-  const checks = await getChecks(checksPath);
+  const checks = [
+    await getChecks(checksPath),
+    ...checksFromWorkflow
+  ];
   core.debug(`parsed checks: ${JSON.stringify(checks, null, 2)}`);
 
   for (let i in checks) {
