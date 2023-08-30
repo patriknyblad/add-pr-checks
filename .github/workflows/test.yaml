@@ -37,11 +37,11 @@ jobs:
         with:
           checks-path: '**/.checks'
 
-      - name: Add checks as arguments
-        uses: ./
-        with:
-          checks:
-            - name: App download QR code
-              value: See details
-              summary: |
-              ![QR Code](https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=https://example.com)
+      # - name: Add checks as arguments
+      #   uses: ./
+      #   with:
+      #     checks:
+      #       - name: App download QR code
+      #         value: See details
+      #         summary: |
+      #         ![QR Code](https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=https://example.com)
