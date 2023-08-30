@@ -53,12 +53,16 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
           checks-path: '**/.checks/*'
   
-      # - name: Add checks as arguments
-      #   uses: ./
-      #   with:
-      #     token: ${{ steps.app-token.outputs.token }}
-      #     checks:
-      #       - name: App download QR code
-      #         value: See details
-      #         summary: |
-      #         ![QR Code](https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=https://example.com)
+      - name: Add checks as arguments
+        uses: ./
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          checks: |
+            - name: App download QR code 1
+              value: See details 1
+              summary: |
+                ![QR Code](https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=https://example.com)
+            - name: App download QR code 2
+              value: See details 2
+              summary: |
+                ![QR Code](https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=https://example.com)
