@@ -77,10 +77,10 @@ For more examples see `sample-checks/` in the [Github Repository](https://github
     token: ${{ secrets.GITHUB_TOKEN }} 
 
     # The path to where you are generating all the checks YAML/JSON files in your build, this supports glob patterns.
-    checks-path: '**/.checks'
+    checks-path: '**/.checks/*'
 
-    # An array of checks you want to add to the PR directly from your workflow.
-    checks: 
+    # A YAML document with an array of checks you want to add to the PR directly from your workflow.
+    checks: |
       - name: Estimated App Size
         value: 116MB
         summary: |
