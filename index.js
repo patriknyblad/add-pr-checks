@@ -22,7 +22,7 @@ const CONCLUSION = {
   TIMED_OUT: 'timed_out',
 };
 
-const getChecks = async (checksPath) => {
+const parseChecksInPath = async (checksPath) => {
   const globber = await glob.create(checksPath)
   const files = await globber.glob()
   core.debug(`glob result files: ${files}`);
@@ -49,13 +49,30 @@ const getChecks = async (checksPath) => {
   return checks;
 };
 
+const parseInlineChecks = (inlineChecks) => {
+  const checks = YAML.parse(inlineChecks) || [];
+  core.debug(`inline checks: ${checks}`);
+  return checks.map((check) => ({
+    'id': check.name    
+          .toLowerCase()
+          .replace(/[^\w\s-]/g, '') // Remove special characters except spaces and dashes
+          .replace(/\s+/g, '-') // Replace spaces with dashes
+          .replace(/-+/g, '-'), // Replace consecutive dashes with a single dash
+    ...check,
+  })) || [];
+};
+
 const execute = async () => {
   const token = core.getInput('token');
+  const inlineChecks = core.getInput('checks');
   const checksPath = core.getInput('checks-path');
   const octokit = new github.getOctokit(token);
   core.debug(`checks-path: ${checksPath}`);
 
-  const checks = await getChecks(checksPath);
+  const checks = [
+    ...await parseChecksInPath(checksPath),
+    ...parseInlineChecks(inlineChecks),
+  ];
   core.debug(`parsed checks: ${JSON.stringify(checks, null, 2)}`);
 
   for (let i in checks) {

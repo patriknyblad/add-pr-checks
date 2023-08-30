@@ -7,7 +7,10 @@ inputs:
     required: true
   checks-path:
     description: 'The path where we should look for checks (example: ".checks/")'
-    required: true
+    required: false
+  checks:
+    description: 'Checks directly defined in the workflow.yaml that you want to add.'
+    required: false
 runs:
   using: 'node16'
   main: 'dist/index.js'

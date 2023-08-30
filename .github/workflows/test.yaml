@@ -1,0 +1,68 @@
+name: Test
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  test:
+    name: Test add-pr-checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get app token
+        id: app-token
+        uses: getsentry/action-github-app-token@v2
+        with:
+          app_id: ${{ secrets.PTRK_APP_ID }}
+          private_key: ${{ secrets.PTRK_APP_PRIVATE_KEY }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Add checks as files
+        uses: ./
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          checks-path: 'sample-checks/*'
+
+      - name: Write sample check files
+        run: |
+          mkdir -p .checks
+
+          echo "---
+          name: (Sample) Estimated App Size
+          value: 116MB
+          summary: |
+            # Estimated app download size
+          text: | 
+            This size is just and estimation and is the result of **compressing** the build estimated-app-size and measuring the 
+            size. It should be fairly close to the size reported on the store." >> .checks/estimated-app-size.yaml
+
+          echo "---
+          name: (Sample) Modules count
+          value: '24'
+          summary: |
+            # Modularization progress
+          text: | 
+            There are currently 24 modules in this repo" >> .checks/modules-count.yaml
+
+      - name: Add checks as files
+        uses: ./
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          checks-path: '**/.checks/*'
+  
+      - name: Add checks as arguments
+        uses: ./
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          checks: |
+            - name: App download QR code 1
+              value: See details 1
+              summary: |
+                ![QR Code](https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=https://example.com)
+            - name: App download QR code 2
+              value: See details 2
+              summary: |
+                ![QR Code](https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=https://example.com)

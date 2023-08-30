@@ -104,3 +104,6 @@ typings/
 
 # Local files used as development playground
 playground/
+
+# Ignore our own generated check files
+.checks
