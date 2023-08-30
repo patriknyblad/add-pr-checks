@@ -1,0 +1,47 @@
+name: Test
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  test:
+    name: Test add-pr-checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Write sample check files
+        run: |
+          mkdir -p .checks
+
+          echo "name: (Sample) Estimated App Size" > estimated-app-size.yaml
+          echo "value: 116MB" >> estimated-app-size.yaml
+          echo "summary: |
+            # Estimated app download size" >> estimated-app-size.yaml
+          echo "text: | 
+            This size is just and estimation and is the result of **compressing** the build estimated-app-size and measuring the 
+            size. It should be fairly close to the size reported on the store." >> estimated-app-size.yaml
+
+          echo "name: (Sample) Modules count" > modules-count.yaml
+          echo "value: 24" >> modules-count.yaml
+          echo "summary: |
+            # Modularization progress" >> modules-count.yaml
+          echo "text: | 
+            There are currently 24 modules in this repo" >> modules-count.yaml
+
+      - name: Add checks as files
+        uses: ./
+        with:
+          checks-path: '**/.checks'
+
+      - name: Add checks as arguments
+        uses: ./
+        with:
+          checks:
+            - name: App download QR code
+              value: See details
+              summary: |
+              ![QR Code](https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=https://example.com)
