@@ -20602,7 +20602,7 @@ const execute = async () => {
   core.debug(`checks-path: ${checksPath}`);
 
   const checks = [
-    await getChecks(checksPath),
+    ...await getChecks(checksPath),
     ...checksFromWorkflow
   ];
   core.debug(`parsed checks: ${JSON.stringify(checks, null, 2)}`);
